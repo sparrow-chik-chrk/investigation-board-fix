@@ -1,0 +1,134 @@
+@font-face {
+  font-family: 'Rock Salt';
+  src: url('..assets/fonts/rock_salt.ttf') format('ttf');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.custom-drawing-text {
+  font-family: 'Rock Salt', Arial, sans-serif;
+  color: #000000; /* Black text */
+}
+
+.sticky-note {
+  background-image: url("modules/investigation-board/assets/note_white.webp");
+  width: 200px;
+  height: 200px;
+}
+
+.photo-note {
+  background-image: url("modules/investigation-board/assets/photoFrame.webp");
+  width: 250px;
+  height: 310px;
+}
+
+/* EDIT FORM  */
+/* 
+.note-config-wrapper {
+  position: relative;
+  width: 400px;
+  min-height: 310px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  border: none;
+}
+
+.note-config-wrapper.sticky-mode {
+  background-image: url("../assets/note_white.webp");
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.note-config-wrapper.photo-mode {
+  background-image: url("../assets/photoFrame.webp");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.note-config-wrapper .window-content {
+  background: none;
+  border: none;
+}
+
+.note-config-wrapper form {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.note-type-group {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 150px;
+}
+
+.note-text-group {
+  position: absolute;
+  left: 20px;
+  width: 360px;
+}
+
+.note-config-wrapper.sticky-mode .note-text-group {
+  top: 100px;
+}
+
+.note-config-wrapper.photo-mode .note-text-group {
+  top: 220px;
+}
+
+.note-image-group {
+  position: absolute;
+  top: 50px;
+  right: 20px;
+  width: 200px;
+}
+
+.note-save-group {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+}
+
+.note-config-wrapper input,
+.note-config-wrapper textarea,
+.note-config-wrapper select {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid #ccc;
+  border-radius: 2px;
+  padding: 4px;
+  font-size: 14px;
+  font-family: Arial, sans-serif;
+}
+
+.note-config-wrapper label {
+  font-size: 12px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 3px;
+  display: inline-block;
+}
+
+.file-picker-button {
+  margin-left: 5px;
+  background: #eee;
+  border: 1px solid #ccc;
+  padding: 2px 4px;
+  cursor: pointer;
+}
+
+.save-button {
+  background: #3f51b5;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 14px;
+  border-radius: 2px;
+}
+.save-button i {
+  margin-right: 5px;
+} */
