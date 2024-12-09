@@ -1,5 +1,7 @@
+export const MODULE_ID = "investigation-board";
+
 export const registerSettings = function() {
-    const MODULE_ID = "investigation-board";
+
 
     const refreshAllDrawings = () => {
         if (canvas.drawings) {
@@ -87,7 +89,7 @@ export const registerSettings = function() {
         config: false, // Hidden from the settings UI
         type: Object,
         default: {
-            "Rock Salt": { sticky: 60, photo: 14 },
+            "Rock Salt": { sticky: 60, photo: 13 },
             "Courier New": { sticky: 90, photo: 16 },
             "Times New Roman": { sticky: 80, photo: 20 },
             "Signika": { sticky: 80, photo: 20 },

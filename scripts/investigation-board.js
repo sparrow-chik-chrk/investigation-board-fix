@@ -202,25 +202,53 @@ class CustomDrawing extends Drawing {
 
 export { CustomDrawing, CustomDrawingSheet };
 
-// Function to Create Notes as Drawings
+Hooks.on("getSceneControlButtons", (controls) => {
+  // Find the Journal Notes controls group
+  const journalControls = controls.find((c) => c.name === "notes");
+
+  if (!journalControls) {
+    console.error("Journal Notes Controls not found!");
+    return;
+  }
+
+  // Add Investigation Board buttons to the Journal Notes controls
+  journalControls.tools.push(
+    {
+      name: "createStickyNote",
+      title: "Create Sticky Note",
+      icon: "fas fa-sticky-note",
+      visible: true,
+      onClick: () => createNote("sticky"),
+      button: true,
+    },
+    {
+      name: "createPhotoNote",
+      title: "Create Photo Note",
+      icon: "fa-solid fa-camera-polaroid",
+      visible: true,
+      onClick: () => createNote("photo"),
+      button: true,
+    }
+  );
+});
+
+// Function to create notes and switch to Drawing Canvas
 async function createNote(noteType) {
   const scene = canvas.scene;
   if (!scene) {
-      console.error("Cannot create note: No active scene.");
-      return;
+    console.error("Cannot create note: No active scene.");
+    return;
   }
 
-  const stickyW = game.settings.get(MODULE_ID, "stickyNoteWidth");
-  const photoW = game.settings.get(MODULE_ID, "photoNoteWidth");
+  const stickyW = game.settings.get(MODULE_ID, "stickyNoteWidth") || 200;
+  const photoW = game.settings.get(MODULE_ID, "photoNoteWidth") || 225;
 
-  const stickyText = game.settings.get(MODULE_ID, "stickyNoteDefaultText");
-  const photoText = game.settings.get(MODULE_ID, "photoNoteDefaultText");
+  const stickyText = game.settings.get(MODULE_ID, "stickyNoteDefaultText") || "Clue";
+  const photoText = game.settings.get(MODULE_ID, "photoNoteDefaultText") || "Suspect/Place";
 
-  // Aspect ratios
-  const stickyAspect = 1; // Sticky notes are square
-  const photoAspect = 225 / 290; // Photo note width:height ratio
+  const stickyAspect = 1;
+  const photoAspect = 225 / 290;
 
-  // Calculate dimensions
   const width = noteType === "photo" ? photoW : stickyW;
   const height = noteType === "photo" ? Math.round(photoW / photoAspect) : Math.round(stickyW * stickyAspect);
 
@@ -229,36 +257,35 @@ async function createNote(noteType) {
   const y = dims.height / 2;
 
   const defaultText = noteType === "photo" ? photoText : stickyText;
-
-  // Assign placeholder image for photo notes
   const defaultImage = "modules/investigation-board/assets/placeholder.webp";
 
+  // Create the note as a drawing
   await canvas.scene.createEmbeddedDocuments("Drawing", [
-      {
-          type: "r",
-          author: game.user.id,
-          x,
-          y,
-          shape: { width, height },
-          fillColor: "#ffffff",
-          fillAlpha: 1,
-          strokeColor: "#00000000",
-          strokeAlpha: 0,
-          locked: false,
-          role: "object",
-          flags: {
-              "investigation-board": {
-                  type: noteType,
-                  text: defaultText,
-                  image: noteType === "photo" ? defaultImage : null,
-              },
-          },
-          "flags.core.sheetClass": "investigation-board.CustomDrawingSheet",
-          "ownership": { "default": 3 },
+    {
+      type: "r",
+      author: game.user.id,
+      x,
+      y,
+      shape: { width, height },
+      fillColor: "#ffffff",
+      fillAlpha: 1,
+      strokeColor: "transparent",
+      strokeAlpha: 0,
+      locked: false,
+      flags: {
+        [MODULE_ID]: {
+          type: noteType,
+          text: defaultText,
+          image: noteType === "photo" ? defaultImage : null,
+        },
       },
+      "flags.core.sheetClass": "investigation-board.CustomDrawingSheet",
+      "ownership": { default: 3 },
+    },
   ]);
 
-  console.log(`Created ${noteType} note at (${x}, ${y}) with dimensions (${width}, ${height}) and text: "${defaultText}"`);
+  // Switch to the Drawing layer
+  canvas.drawings.activate();
 }
 
 // Register Custom Drawing Sheet
@@ -276,33 +303,6 @@ Hooks.once("init", () => {
 Hooks.once("canvasInit", () => {
   CONFIG.Drawing.objectClass = CustomDrawing;
   console.log("CustomDrawing renderer extended.");
-});
-
-Hooks.on("getSceneControlButtons", (controls) => {
-  const drawingsControl = controls.find(c => c.name === "drawings");
-  if (!drawingsControl) return;
-
-  drawingsControl.tools.push({
-    name: "createStickyNote",
-    title: "Create Sticky Note",
-    icon: "fas fa-sticky-note",
-    visible: true,
-    onClick: () => {
-      createNote("sticky");
-    },
-    button: true
-  });
-
-  drawingsControl.tools.push({
-    name: "createPhotoNote",
-    title: "Create Photo Note",
-    icon: "fa-solid fa-camera-polaroid",
-    visible: true,
-    onClick: () => {
-      createNote("photo");
-    },
-    button: true
-  });
 });
 
 window.createStickyNote = async () => await createNote("sticky");
