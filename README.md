@@ -28,6 +28,8 @@ __Edit and drag__ the note around is only possible in **drawing mode** ![image](
 There are some pretty straightforward options in the settings for the module so you can better adjust it for your table
 ![image](https://github.com/user-attachments/assets/5acf7e09-4eb2-44b7-b002-4e7347698978)
 
+If you click on the Delete button of the Drawing tools ALL NOTES WILL BE DELETED, so beware. To get rid of notes and drawings individually select them and use the Delete button on your keyboard.
+
 ## Installation
 
 To install this module, in Foundry VTT go to the Add-on Modules tab:
