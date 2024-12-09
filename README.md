@@ -2,20 +2,6 @@
 
 A Foundry VTT module that lets everyone create, edit, and move sticky and photo notes on the scene.
 
-## Installation
-
-To install this module, in Foundry VTT go to the Add-on Modules tab:
-
-Search in the top bar for "investigation board" and click Install
-
-OR
-
-Click Install Module
-
-Paste the following manifest URL into the bottom Manifest URL field: https://raw.githubusercontent.com/mordachai/investigation-board/main/module.json
-
-After that go to your world and enable the module in your Game Settings under Manage Modules
-
 ## How to Use
 
 ![image](https://github.com/user-attachments/assets/c922e8d5-b168-4155-a5e3-229c06a54aa0)
@@ -42,6 +28,19 @@ __Edit and drag__ the note around is only possible in **drawing mode** ![image](
 There are some pretty straightforward options in the settings for the module so you can better adjust it for your table
 ![image](https://github.com/user-attachments/assets/5acf7e09-4eb2-44b7-b002-4e7347698978)
 
+## Installation
+
+To install this module, in Foundry VTT go to the Add-on Modules tab:
+
+Search in the top bar for "investigation board" and click Install
+
+OR
+
+Click Install Module
+
+Paste the following manifest URL into the bottom Manifest URL field: https://raw.githubusercontent.com/mordachai/investigation-board/main/module.json
+
+After that go to your world and enable the module in your Game Settings under Manage Modules
 
 ## Known Limitations
 
