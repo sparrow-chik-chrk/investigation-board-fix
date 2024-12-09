@@ -18,7 +18,7 @@ After that go to your world and enable the module in your Game Settings under Ma
 
 ## How to Use
 
-![image](https://github.com/user-attachments/assets/4bf03b99-27d0-4f9a-aaf8-aa86cf4733eb)
+![image](https://github.com/user-attachments/assets/c922e8d5-b168-4155-a5e3-229c06a54aa0)
 
 Open the Journal Notes Toolbar:
 
@@ -29,12 +29,13 @@ Create Photo Note (a Polaroid camera icon)
 
 ### Create and Edit a Note
 
-Click Create Sticky Note to place a sticky note on the middle of the scene. The scene will go automatically to __drawing mode__ and with a double click you can change the note content.
+Click Create Sticky Note to place a sticky note in the middle of the scene. The scene will go automatically to __drawing mode__ and with a double click you can change the note content.
 
-__Edit and drag the note arond is only possible in drawing mode, since they are a drawing.__ 
+__Edit and drag the note around is only possible in drawing mode ![image](https://github.com/user-attachments/assets/4b6ecb10-2ab4-4328-82fb-939bbcca1f91)
+, since they are a drawing.__ 
 
-#### **Note** (pun intended): Only the GM can assign an image to the photo notes, unless she/he/they give you browser files permissions.
+#### **Note** (pun intended): Only the GM can assign an image to the photo notes unless she/he/they give you browser files permissions.
 
 ## Known Limitations
 
-- **Refresh on Update:** The module includes a hook to ensure notes redraw when updated by others. However, if something seems out of date, try selecting/deselecting notes or refreshing the page.
+- **Refresh on Update:** The module includes a hook to ensure notes are redrawn when updated by others. However, if something seems out of date, try selecting/deselecting notes or refreshing the page.
