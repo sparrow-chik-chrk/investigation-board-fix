@@ -31,10 +31,14 @@ Create Photo Note (a Polaroid camera icon)
 
 Click Create Sticky Note to place a sticky note in the middle of the scene. The scene will go automatically to __drawing mode__ and with a double click you can change the note content.
 
-__Edit and drag the note around is only possible in drawing mode ![image](https://github.com/user-attachments/assets/4b6ecb10-2ab4-4328-82fb-939bbcca1f91)
-, since they are a drawing.__ 
+__Edit and drag__ the note around is only possible in **drawing mode** ![image](https://github.com/user-attachments/assets/4b6ecb10-2ab4-4328-82fb-939bbcca1f91)
+, since in the end, they are a drawing. 
 
-#### **Note** (pun intended): Only the GM can assign an image to the photo notes unless she/he/they give you browser files permissions.
+#### **Note** (pun intended): Only the GM can assign an image to the photo notes unless she/he/they give you browser file permissions.
+
+There are some pretty straightforward options in the settings for the module so you can better adjust it for your table
+![image](https://github.com/user-attachments/assets/5acf7e09-4eb2-44b7-b002-4e7347698978)
+
 
 ## Known Limitations
 
