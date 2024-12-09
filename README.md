@@ -29,7 +29,10 @@ Create Photo Note (a Polaroid camera icon)
 
 ### Create and Edit a Note
 
-Click Create Sticky Note to place a sticky note in the middle of the scene. The scene will go automatically to __drawing mode__ and with a double click you can change the note content.
+Click Create Sticky Note/Photo Note to place one of them in the middle of the scene.
+
+The scene will automatically go to __drawing mode__, and you can change the note content with a DOUBLE CLICK.
+
 
 __Edit and drag__ the note around is only possible in **drawing mode** ![image](https://github.com/user-attachments/assets/4b6ecb10-2ab4-4328-82fb-939bbcca1f91)
 , since in the end, they are a drawing. 
