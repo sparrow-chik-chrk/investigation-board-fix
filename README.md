@@ -1,8 +1,10 @@
-# investigation-board
+# Investigation Board
 
-A Foundry VTT module that lets everyone create, edit, and move sticky and photo notes on the scene as collaborative investigation tools.
+A Foundry VTT module that lets everyone create, edit, and move sticky and photo notes on the scene.
 
 ## How to Use
+
+![image](https://github.com/user-attachments/assets/4bf03b99-27d0-4f9a-aaf8-aa86cf4733eb)
 
 Open the Drawings Toolbar:
 
