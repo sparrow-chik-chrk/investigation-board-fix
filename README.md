@@ -1,6 +1,8 @@
 # Investigation Board
 
-A Foundry VTT module that lets everyone create, edit, and move sticky and photo notes on the scene.
+A Foundry VTT module that lets everyone create, edit, and move sticky and photo notes on the scene. A must-have for investigative games like City of Mist, Call of Cthulhu, and all your conspiracy adventures.
+
+![Screenshot 2024-12-10 225533](https://github.com/user-attachments/assets/f3e0d566-9aed-4607-8404-b9080fff920f)
 
 ## How to Use
 
@@ -25,7 +27,14 @@ __Edit and drag__ the note around is only possible in **drawing mode** ![image](
 
 #### **Note** (pun intended): Only the GM can assign an image to the photo notes unless she/he/they give you browser file permissions.
 
+If you click on the Delete button of the Drawing tools ALL NOTES WILL BE DELETED, so beware. To get rid of notes and drawings individually select them and use the Delete button on your keyboard.
+
 There are some pretty straightforward options in the settings for the module so you can better adjust it for your table
+
+<<<<<<< HEAD
+=======
+![image](https://github.com/user-attachments/assets/5acf7e09-4eb2-44b7-b002-4e7347698978)
+>>>>>>> 115989d811c0ee3ff25b2eacb4db8268ebff7f19
 
 
 ## Installation
