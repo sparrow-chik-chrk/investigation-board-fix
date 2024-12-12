@@ -31,10 +31,7 @@ If you click on the Delete button of the Drawing tools ALL NOTES WILL BE DELETED
 
 There are some pretty straightforward options in the settings for the module so you can better adjust it for your table
 
-<<<<<<< HEAD
-=======
-![image](https://github.com/user-attachments/assets/5acf7e09-4eb2-44b7-b002-4e7347698978)
->>>>>>> 115989d811c0ee3ff25b2eacb4db8268ebff7f19
+![image](https://github.com/user-attachments/assets/716ede74-c923-4b35-8c04-51e60fdc873a)
 
 
 ## Installation
