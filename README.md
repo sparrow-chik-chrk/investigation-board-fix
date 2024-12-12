@@ -2,7 +2,7 @@
 
 A Foundry VTT module that lets everyone create, edit, and move sticky and photo notes on the scene. A must-have for investigative games like City of Mist, Call of Cthulhu, and all your conspiracy adventures.
 
-![Screenshot 2024-12-10 225533](https://github.com/user-attachments/assets/f3e0d566-9aed-4607-8404-b9080fff920f)
+![image](https://github.com/user-attachments/assets/aa6ac7ea-6051-4c10-b88f-c4dcc8a3bd62)
 
 ## How to Use
 
