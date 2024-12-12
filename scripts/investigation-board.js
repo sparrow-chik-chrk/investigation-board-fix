@@ -98,39 +98,66 @@ class CustomDrawing extends Drawing {
     const noteData = this.document.flags[MODULE_ID];
     if (!noteData) return;
 
-    // Dimensions for the note
+    // Determine note dimensions
     const width = noteData.type === "photo"
         ? game.settings.get(MODULE_ID, "photoNoteWidth")
         : game.settings.get(MODULE_ID, "stickyNoteWidth");
 
     const height = noteData.type === "photo"
-        ? Math.round(width / (225 / 290))
+        ? Math.round(width / (225 / 290)) // Maintain aspect ratio for photos
         : width;
 
     const bgImage = noteData.type === "photo"
         ? "modules/investigation-board/assets/photoFrame.webp"
         : "modules/investigation-board/assets/note_white.webp";
 
-    // Set up the background sprite
+    // Update background sprite
     if (!this.bgSprite) {
         this.bgSprite = new PIXI.Sprite();
         this.addChildAt(this.bgSprite, 0);
     }
-    this.bgSprite.texture = PIXI.Texture.from(bgImage);
+    try {
+        this.bgSprite.texture = PIXI.Texture.from(bgImage);
+    } catch (err) {
+        console.error(`Failed to load background texture: ${bgImage}`, err);
+        this.bgSprite.texture = PIXI.Texture.EMPTY; // Fallback in case of error
+    }
     this.bgSprite.width = width;
     this.bgSprite.height = height;
 
-    // Add or retrieve the pin sprite
-    if (!this.pinSprite) {
-        this.pinSprite = new PIXI.Sprite();
-        this.addChildAt(this.pinSprite, 1); // Render above the background
+    // Update foreground sprite (for photo notes)
+    if (noteData.type === "photo") {
+        const fgImage = noteData.image || "modules/investigation-board/assets/placeholder.webp";
+        if (!this.fgSprite) {
+            this.fgSprite = new PIXI.Sprite();
+            this.addChild(this.fgSprite); // Ensure it's layered above bgSprite
+        }
+        try {
+            this.fgSprite.texture = PIXI.Texture.from(fgImage);
+        } catch (err) {
+            console.error(`Failed to load foreground texture: ${fgImage}`, err);
+            this.fgSprite.texture = PIXI.Texture.EMPTY; // Fallback in case of error
+        }
+
+        const widthOffset = width * 0.13333;
+        const heightOffset = height * 0.30246;
+
+        this.fgSprite.width = width - widthOffset;
+        this.fgSprite.height = height - heightOffset;
+        this.fgSprite.position.set(widthOffset / 2, heightOffset / 2);
+        this.fgSprite.visible = true;
+    } else if (this.fgSprite) {
+        this.fgSprite.visible = false;
     }
 
-    // Determine the pin color
+    // Update pin sprite
+    if (!this.pinSprite) {
+        this.pinSprite = new PIXI.Sprite();
+        this.addChildAt(this.pinSprite, 1); // Layer above bgSprite
+    }
     let pinColor = noteData.pinColor;
 
     if (!pinColor) {
-        // Get the pin color from the settings or assign randomly
         const pinSetting = game.settings.get(MODULE_ID, "pinColor");
         pinColor = pinSetting === "random"
             ? PIN_COLORS[Math.floor(Math.random() * PIN_COLORS.length)]
@@ -141,12 +168,17 @@ class CustomDrawing extends Drawing {
     }
 
     const pinImage = `modules/investigation-board/assets/${pinColor}`;
-    this.pinSprite.texture = PIXI.Texture.from(pinImage);
+    try {
+        this.pinSprite.texture = PIXI.Texture.from(pinImage);
+    } catch (err) {
+        console.error(`Failed to load pin texture: ${pinImage}`, err);
+        this.pinSprite.texture = PIXI.Texture.EMPTY; // Fallback in case of error
+    }
     this.pinSprite.width = 40; // Adjust pin size
     this.pinSprite.height = 40;
-    this.pinSprite.position.set(width / 2 - 16, -4); // Center pin at the top
+    this.pinSprite.position.set(width / 2 - 20, -2); // Center pin at the top
 
-    // Configure the text
+    // Text Configuration
     const font = game.settings.get(MODULE_ID, "font");
     const baseFontSize = game.settings.get(MODULE_ID, "baseFontSize");
     const fontSize = (width / 200) * baseFontSize;
