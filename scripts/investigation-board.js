@@ -2,6 +2,8 @@ import { registerSettings } from "./settings.js";
 
 const MODULE_ID = "investigation-board";
 const BASE_FONT_SIZE = 18;
+const PIN_COLORS = ["redPin.webp", "bluePin.webp", "yellowPin.webp", "greenPin.webp"];
+
 
 function getBaseCharacterLimits() {
   return game.settings.get(MODULE_ID, "baseCharacterLimits");
@@ -96,84 +98,85 @@ class CustomDrawing extends Drawing {
     const noteData = this.document.flags[MODULE_ID];
     if (!noteData) return;
 
+    // Dimensions for the note
     const width = noteData.type === "photo"
-      ? game.settings.get(MODULE_ID, "photoNoteWidth")
-      : game.settings.get(MODULE_ID, "stickyNoteWidth");
+        ? game.settings.get(MODULE_ID, "photoNoteWidth")
+        : game.settings.get(MODULE_ID, "stickyNoteWidth");
 
     const height = noteData.type === "photo"
-      ? Math.round(width / (225 / 290))
-      : width;
+        ? Math.round(width / (225 / 290))
+        : width;
 
     const bgImage = noteData.type === "photo"
-      ? "modules/investigation-board/assets/photoFrame.webp"
-      : "modules/investigation-board/assets/note_white.webp";
+        ? "modules/investigation-board/assets/photoFrame.webp"
+        : "modules/investigation-board/assets/note_white.webp";
 
+    // Set up the background sprite
     if (!this.bgSprite) {
-      this.bgSprite = new PIXI.Sprite();
-      this.addChildAt(this.bgSprite, 0);
+        this.bgSprite = new PIXI.Sprite();
+        this.addChildAt(this.bgSprite, 0);
     }
-    try {
-      this.bgSprite.texture = PIXI.Texture.from(bgImage);
-    } catch (err) {
-      console.error(`Failed to load background texture: ${bgImage}`, err);
-      this.bgSprite.texture = PIXI.Texture.EMPTY;
-    }
-    this.bgSprite.visible = true;
+    this.bgSprite.texture = PIXI.Texture.from(bgImage);
     this.bgSprite.width = width;
     this.bgSprite.height = height;
 
-    if (noteData.type === "photo") {
-      const fgImage = noteData.image || "modules/investigation-board/assets/placeholder.webp";
-      if (!this.fgSprite) {
-        this.fgSprite = new PIXI.Sprite();
-        this.addChild(this.fgSprite);
-      }
-      try {
-        this.fgSprite.texture = PIXI.Texture.from(fgImage);
-      } catch (err) {
-        console.error(`Failed to load foreground texture: ${fgImage}`, err);
-        this.fgSprite.texture = PIXI.Texture.EMPTY;
-      }
-
-      const widthOffset = width * 0.13333;
-      const heightOffset = height * 0.30246;
-
-      this.fgSprite.width = width - widthOffset;
-      this.fgSprite.height = height - heightOffset;
-      this.fgSprite.position.set(widthOffset / 2, heightOffset / 2);
-      this.fgSprite.visible = true;
-    } else if (this.fgSprite) {
-      this.fgSprite.visible = false;
+    // Add or retrieve the pin sprite
+    if (!this.pinSprite) {
+        this.pinSprite = new PIXI.Sprite();
+        this.addChildAt(this.pinSprite, 1); // Render above the background
     }
 
-    const baseFontSize = game.settings.get(MODULE_ID, "baseFontSize");
+    // Determine the pin color
+    let pinColor = noteData.pinColor;
+
+    if (!pinColor) {
+        // Get the pin color from the settings or assign randomly
+        const pinSetting = game.settings.get(MODULE_ID, "pinColor");
+        pinColor = pinSetting === "random"
+            ? PIN_COLORS[Math.floor(Math.random() * PIN_COLORS.length)]
+            : `${pinSetting}Pin.webp`;
+
+        // Save the assigned color in the note's flags
+        await this.document.update({ [`flags.${MODULE_ID}.pinColor`]: pinColor });
+    }
+
+    const pinImage = `modules/investigation-board/assets/${pinColor}`;
+    this.pinSprite.texture = PIXI.Texture.from(pinImage);
+    this.pinSprite.width = 40; // Adjust pin size
+    this.pinSprite.height = 40;
+    this.pinSprite.position.set(width / 2 - 16, -4); // Center pin at the top
+
+    // Configure the text
     const font = game.settings.get(MODULE_ID, "font");
+    const baseFontSize = game.settings.get(MODULE_ID, "baseFontSize");
     const fontSize = (width / 200) * baseFontSize;
 
     const textStyle = new PIXI.TextStyle({
-      fontFamily: font,
-      fontSize: fontSize,
-      fill: "#000000",
-      wordWrap: true,
-      wordWrapWidth: width - 15,
-      align: "center",
+        fontFamily: font,
+        fontSize: fontSize,
+        fill: "#000000",
+        wordWrap: true,
+        wordWrapWidth: width - 15,
+        align: "center",
     });
 
     const truncatedText = this._truncateText(noteData.text || "Default Text", font, noteData.type, fontSize);
 
+    // Add or update the text
     if (!this.noteText) {
-      this.noteText = new PIXI.Text(truncatedText, textStyle);
-      this.noteText.anchor.set(0.5);
-      this.addChild(this.noteText);
+        this.noteText = new PIXI.Text(truncatedText, textStyle);
+        this.noteText.anchor.set(0.5);
+        this.addChild(this.noteText);
     } else {
-      this.noteText.style = textStyle;
-      this.noteText.text = truncatedText;
+        this.noteText.style = textStyle;
+        this.noteText.text = truncatedText;
     }
 
+    // Position the text based on note type
     if (noteData.type === "photo") {
-      this.noteText.position.set(width / 2, height - 25);
+        this.noteText.position.set(width / 2, height - 25); // Near the bottom for photos
     } else {
-      this.noteText.position.set(width / 2, height / 2);
+        this.noteText.position.set(width / 2, height / 2); // Center for sticky notes
     }
   }
 

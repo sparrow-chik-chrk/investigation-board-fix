@@ -13,6 +13,28 @@ export const registerSettings = function() {
         }
     };
 
+    game.settings.register(MODULE_ID, "pinColor", {
+        name: "Pin Color",
+        hint: "Choose the color of the pin for notes. Selecting 'Random' will randomly assign a pin color.",
+        scope: "world",
+        config: true,
+        type: String,
+        choices: {
+            random: "Random",
+            red: "Red",
+            blue: "Blue",
+            yellow: "Yellow",
+            green: "Green"
+        },
+        default: "random",
+        onChange: () => {
+            if (canvas.drawings) {
+                canvas.drawings.placeables.forEach(drawing => drawing.refresh());
+            }
+        }
+    });
+    
+
     // Register existing settings
     game.settings.register(MODULE_ID, "stickyNoteWidth", {
         name: "Sticky Note Width",

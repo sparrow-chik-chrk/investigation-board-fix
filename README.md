@@ -26,7 +26,7 @@ __Edit and drag__ the note around is only possible in **drawing mode** ![image](
 #### **Note** (pun intended): Only the GM can assign an image to the photo notes unless she/he/they give you browser file permissions.
 
 There are some pretty straightforward options in the settings for the module so you can better adjust it for your table
-![image](https://github.com/user-attachments/assets/5acf7e09-4eb2-44b7-b002-4e7347698978)
+
 
 ## Installation
 
