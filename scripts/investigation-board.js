@@ -114,7 +114,7 @@ class CustomDrawing extends Drawing {
     // Update background sprite
     if (!this.bgSprite) {
         this.bgSprite = new PIXI.Sprite();
-        this.addChildAt(this.bgSprite, 0);
+        this.addChild(this.bgSprite); // Add first (base layer)
     }
     try {
         this.bgSprite.texture = PIXI.Texture.from(bgImage);
@@ -130,7 +130,7 @@ class CustomDrawing extends Drawing {
         const fgImage = noteData.image || "modules/investigation-board/assets/placeholder.webp";
         if (!this.fgSprite) {
             this.fgSprite = new PIXI.Sprite();
-            this.addChild(this.fgSprite); // Ensure it's layered above bgSprite
+            this.addChild(this.fgSprite); // Add second (above background)
         }
         try {
             this.fgSprite.texture = PIXI.Texture.from(fgImage);
@@ -150,10 +150,43 @@ class CustomDrawing extends Drawing {
         this.fgSprite.visible = false;
     }
 
+    // Configure the text
+    const font = game.settings.get(MODULE_ID, "font");
+    const baseFontSize = game.settings.get(MODULE_ID, "baseFontSize");
+    const fontSize = (width / 200) * baseFontSize;
+
+    const textStyle = new PIXI.TextStyle({
+        fontFamily: font,
+        fontSize: fontSize,
+        fill: "#000000",
+        wordWrap: true,
+        wordWrapWidth: width - 15,
+        align: "center",
+    });
+
+    const truncatedText = this._truncateText(noteData.text || "Default Text", font, noteData.type, fontSize);
+
+    // Add or update the text
+    if (!this.noteText) {
+        this.noteText = new PIXI.Text(truncatedText, textStyle);
+        this.noteText.anchor.set(0.5);
+        this.addChild(this.noteText); // Add third (above photo but below pin)
+    } else {
+        this.noteText.style = textStyle;
+        this.noteText.text = truncatedText;
+    }
+
+    // Position the text based on note type
+    if (noteData.type === "photo") {
+        this.noteText.position.set(width / 2, height - 25); // Near the bottom for photos
+    } else {
+        this.noteText.position.set(width / 2, height / 2); // Center for sticky notes
+    }
+
     // Update pin sprite
     if (!this.pinSprite) {
         this.pinSprite = new PIXI.Sprite();
-        this.addChildAt(this.pinSprite, 1); // Layer above bgSprite
+        this.addChild(this.pinSprite); // Add last (top layer)
     }
     let pinColor = noteData.pinColor;
 
@@ -176,40 +209,7 @@ class CustomDrawing extends Drawing {
     }
     this.pinSprite.width = 40; // Adjust pin size
     this.pinSprite.height = 40;
-    this.pinSprite.position.set(width / 2 - 20, -2); // Center pin at the top
-
-    // Text Configuration
-    const font = game.settings.get(MODULE_ID, "font");
-    const baseFontSize = game.settings.get(MODULE_ID, "baseFontSize");
-    const fontSize = (width / 200) * baseFontSize;
-
-    const textStyle = new PIXI.TextStyle({
-        fontFamily: font,
-        fontSize: fontSize,
-        fill: "#000000",
-        wordWrap: true,
-        wordWrapWidth: width - 15,
-        align: "center",
-    });
-
-    const truncatedText = this._truncateText(noteData.text || "Default Text", font, noteData.type, fontSize);
-
-    // Add or update the text
-    if (!this.noteText) {
-        this.noteText = new PIXI.Text(truncatedText, textStyle);
-        this.noteText.anchor.set(0.5);
-        this.addChild(this.noteText);
-    } else {
-        this.noteText.style = textStyle;
-        this.noteText.text = truncatedText;
-    }
-
-    // Position the text based on note type
-    if (noteData.type === "photo") {
-        this.noteText.position.set(width / 2, height - 25); // Near the bottom for photos
-    } else {
-        this.noteText.position.set(width / 2, height / 2); // Center for sticky notes
-    }
+    this.pinSprite.position.set(width / 2 - 20, 3); // Center pin at the top
   }
 
   _truncateText(text, font, noteType, currentFontSize) {
