@@ -10,8 +10,8 @@ A Foundry VTT module that lets everyone create, edit, and move sticky and photo 
 
 Create photo notes directly from Actors and Scenes. Click with the right button over an actor or scene you want to create a note and select Create Photo Note from... in the context menu.
 
-**For Scenes:** the note will display the navigation name and the scene name if there isn't one.
-**For Actors:** the note will display the Token name (prototypeToken.name) or any other key you point out in the settings (like system.alias for FitD games). If left empty it will default to just the name of the actor.
+- **For Scenes:** the note will display the navigation name and the scene name if there isn't one.
+- **For Actors:** the note will display the Token name (prototypeToken.name) or any other key you point out in the settings (like system.alias for FitD games). If left empty it will default to just the name of the actor.
 
 ## How to Use
 
