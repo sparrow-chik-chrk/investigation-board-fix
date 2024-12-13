@@ -19,6 +19,9 @@ function getDynamicCharacterLimits(font, currentFontSize) {
   };
 }
 
+function getNestedProperty(obj, path, defaultValue) {
+  return path.split('.').reduce((acc, part) => acc && acc[part] ? acc[part] : undefined, obj) || defaultValue;
+}
 
 class CustomDrawingSheet extends DrawingConfig {
   static get defaultOptions() {
@@ -235,38 +238,6 @@ class CustomDrawing extends Drawing {
   }
 }
 
-export { CustomDrawing, CustomDrawingSheet };
-
-Hooks.on("getSceneControlButtons", (controls) => {
-  // Find the Journal Notes controls group
-  const journalControls = controls.find((c) => c.name === "notes");
-
-  if (!journalControls) {
-    console.error("Journal Notes Controls not found!");
-    return;
-  }
-
-  // Add Investigation Board buttons to the Journal Notes controls
-  journalControls.tools.push(
-    {
-      name: "createStickyNote",
-      title: "Create Sticky Note",
-      icon: "fas fa-sticky-note",
-      visible: true,
-      onClick: () => createNote("sticky"),
-      button: true,
-    },
-    {
-      name: "createPhotoNote",
-      title: "Create Photo Note",
-      icon: "fa-solid fa-camera-polaroid",
-      visible: true,
-      onClick: () => createNote("photo"),
-      button: true,
-    }
-  );
-});
-
 // Function to create notes and switch to Drawing Canvas
 async function createNote(noteType) {
   const scene = canvas.scene;
@@ -323,6 +294,108 @@ async function createNote(noteType) {
   canvas.drawings.activate();
 }
 
+async function createCharacterPhotoNote(actorId) {
+  const actor = game.actors.get(actorId);
+  if (!actor) {
+    ui.notifications.error("Actor not found!");
+    return;
+  }
+
+  // Get the configured key path and resolve the name
+  const nameKey = game.settings.get(MODULE_ID, "characterNameKey") || "name";
+  const name = getNestedProperty(actor, nameKey, actor.name);
+
+  const imgSrc = actor.img || "modules/investigation-board/assets/placeholder.webp";
+
+  const photoW = game.settings.get(MODULE_ID, "photoNoteWidth") || 225;
+  const photoAspect = 225 / 290;
+  const width = photoW;
+  const height = Math.round(photoW / photoAspect);
+
+  const dims = canvas.dimensions;
+  const x = dims.sceneX + dims.sceneWidth / 2 - width / 2;
+  const y = dims.sceneY + dims.sceneHeight / 2 - height / 2;
+  const randomRotation = (Math.random() * 8 - 4) * (Math.PI / 180);
+
+  // Create the photo note
+  await canvas.scene.createEmbeddedDocuments("Drawing", [
+    {
+      type: "r",
+      author: game.user.id,
+      x,
+      y,
+      shape: { width, height },
+      fillColor: "#ffffff",
+      fillAlpha: 1,
+      strokeColor: "transparent",
+      strokeAlpha: 0,
+      locked: false,
+      rotation: randomRotation,
+      flags: {
+        [MODULE_ID]: {
+          type: "photo",
+          text: name,
+          image: imgSrc,
+        },
+      },
+      "flags.core.sheetClass": "investigation-board.CustomDrawingSheet",
+      "ownership": { default: 3 },
+    },
+  ]);
+
+  canvas.drawings.activate();
+}
+
+async function createScenePhotoNote(sceneId) {
+  const scene = game.scenes.get(sceneId);
+  if (!scene) {
+    ui.notifications.error("Scene not found!");
+    return;
+  }
+
+  // Extract required information
+  const imgSrc = scene.background?.src || "modules/investigation-board/assets/placeholder.webp";
+  const noteText = scene.navName || scene.name;
+
+  const photoW = game.settings.get(MODULE_ID, "photoNoteWidth") || 225;
+  const photoAspect = 225 / 290;
+  const width = photoW;
+  const height = Math.round(photoW / photoAspect);
+
+  const dims = canvas.dimensions;
+  const x = dims.sceneX + dims.sceneWidth / 2 - width / 2;
+  const y = dims.sceneY + dims.sceneHeight / 2 - height / 2;
+  const randomRotation = (Math.random() * 8 - 4) * (Math.PI / 180);
+
+  // Create the photo note
+  await canvas.scene.createEmbeddedDocuments("Drawing", [
+    {
+      type: "r",
+      author: game.user.id,
+      x,
+      y,
+      shape: { width, height },
+      fillColor: "#ffffff",
+      fillAlpha: 1,
+      strokeColor: "transparent",
+      strokeAlpha: 0,
+      locked: false,
+      rotation: randomRotation,
+      flags: {
+        [MODULE_ID]: {
+          type: "photo",
+          text: noteText,
+          image: imgSrc,
+        },
+      },
+      "flags.core.sheetClass": "investigation-board.CustomDrawingSheet",
+      "ownership": { default: 3 },
+    },
+  ]);
+
+  canvas.drawings.activate();
+}
+
 // Register Custom Drawing Sheet
 Hooks.once("init", () => {
   registerSettings(); // Register the module settings first
@@ -340,11 +413,73 @@ Hooks.once("canvasInit", () => {
   console.log("CustomDrawing renderer extended.");
 });
 
-window.createStickyNote = async () => await createNote("sticky");
-window.createPhotoNote = async () => await createNote("photo");
-
 // Force re-draw on update to ensure all clients see changes without dragging
 Hooks.on("updateDrawing", (doc, changes, options, userId) => {
   const drawing = canvas.drawings.get(doc.id);
   if (drawing) drawing.refresh();
 });
+
+Hooks.on("getSceneDirectoryEntryContext", (html, options) => {
+  options.push({
+    name: "Create Scene Photo Note",
+    icon: '<i class="fa-solid fa-camera-polaroid"></i>',
+    condition: (li) => game.user.isGM, // Restrict to GMs
+    callback: async (li) => {
+      const sceneId = li.data("documentId"); // Correct way to fetch the scene ID
+      const scene = game.scenes.get(sceneId); // Fetch the scene from game.scenes
+      if (!scene) {
+        ui.notifications.error("Scene not found!");
+        return;
+      }
+      await createScenePhotoNote(sceneId); // Use the corrected sceneId
+    },
+  });
+});
+
+Hooks.on("getActorDirectoryEntryContext", (html, options) => {
+  options.push({
+    name: "Create Character Photo Note",
+    icon: '<i class="fa-solid fa-camera-polaroid"></i>',
+    condition: (li) => game.user.isGM, // Restrict to GMs
+    callback: async (li) => {
+      const actorId = li.data("documentId");
+      await createCharacterPhotoNote(actorId);
+    },
+  });
+});
+
+Hooks.on("getSceneControlButtons", (controls) => {
+  // Find the Journal Notes controls group
+  const journalControls = controls.find((c) => c.name === "notes");
+
+  if (!journalControls) {
+    console.error("Journal Notes Controls not found!");
+    return;
+  }
+
+  // Add Investigation Board buttons to the Journal Notes controls
+  journalControls.tools.push(
+    {
+      name: "createStickyNote",
+      title: "Create Sticky Note",
+      icon: "fas fa-sticky-note",
+      visible: true,
+      onClick: () => createNote("sticky"),
+      button: true,
+    },
+    {
+      name: "createPhotoNote",
+      title: "Create Photo Note",
+      icon: "fa-solid fa-camera-polaroid",
+      visible: true,
+      onClick: () => createNote("photo"),
+      button: true,
+    }
+  );
+});
+
+window.createStickyNote = async () => await createNote("sticky");
+window.createPhotoNote = async () => await createNote("photo");
+
+export { CustomDrawing, CustomDrawingSheet };
+

@@ -83,6 +83,15 @@ export const registerSettings = function() {
         onChange: () => refreshAllDrawings()
     });
 
+    game.settings.register(MODULE_ID, "characterNameKey", {
+        name: "Character Name Key",
+        hint: "Specify the key path to retrieve the name (e.g., 'prototypeToken.name' or 'system.alias' for Blades in the Dark). If empty, defaults to 'name'.",
+        scope: "world",
+        config: true,
+        default: "prototypeToken.name",
+        type: String,
+      });
+
     game.settings.register(MODULE_ID, "stickyNoteDefaultText", {
         name: "Default Sticky Note Text",
         hint: "The default text to use for new sticky notes.",
