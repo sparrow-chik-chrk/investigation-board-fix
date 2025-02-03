@@ -4,6 +4,15 @@ A Foundry VTT module that lets everyone create, edit, and move sticky and photo 
 
 ![image](https://github.com/user-attachments/assets/aa6ac7ea-6051-4c10-b88f-c4dcc8a3bd62)
 
+## New Feature (v1.2)
+
+![image](https://github.com/user-attachments/assets/c9205949-ff92-4afa-abc0-1380bd152b18)
+
+Create photo notes from Actors and Scenes effortlessly. Right-click on the desired actor or scene, then choose "Create Photo Note from..." in the context menu.
+
+- **For Scenes:** The note will show the navigation name and if there isn't one it will default to the scene name.
+- **For Actors:** The note will feature the Token name (prototypeToken.name) or any key you configure in the settings, such as system.alias for FitD games. If left blank, it will simply display the actor's name.
+
 ## How to Use
 
 ![image](https://github.com/user-attachments/assets/c922e8d5-b168-4155-a5e3-229c06a54aa0)
@@ -21,17 +30,16 @@ Click Create Sticky Note/Photo Note to place one of them in the middle of the sc
 
 The scene will automatically go to __drawing mode__, and you can change the note content with a DOUBLE CLICK.
 
-
 __Edit and drag__ the note around is only possible in **drawing mode** ![image](https://github.com/user-attachments/assets/4b6ecb10-2ab4-4328-82fb-939bbcca1f91)
 , since in the end, they are a drawing. 
 
 #### **Note** (pun intended): Only the GM can assign an image to the photo notes unless she/he/they give you browser file permissions.
 
-If you click on the Delete button of the Drawing tools ALL NOTES WILL BE DELETED, so beware. To get rid of notes and drawings individually select them and use the Delete button on your keyboard.
+If you click on the Delete button of the Drawing tools, ALL NOTES WILL BE DELETED, so beware. To delete notes and drawings individually, select them and use the Delete button on your keyboard.
 
-There are some pretty straightforward options in the settings for the module so you can better adjust it for your table
+The module's settings contain some pretty straightforward options, so you can better adjust it for your table. 
 
-![image](https://github.com/user-attachments/assets/716ede74-c923-4b35-8c04-51e60fdc873a)
+![image](https://github.com/user-attachments/assets/47a642e8-ee5f-4d8a-89cf-c670e84276c2)
 
 
 ## Installation
