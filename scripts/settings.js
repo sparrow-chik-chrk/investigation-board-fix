@@ -62,7 +62,7 @@ export const registerSettings = function() {
         scope: "world",
         config: true,
         type: Number,
-        default: 18,
+        default: 16,
         onChange: () => refreshAllDrawings()
     });
 
@@ -120,11 +120,11 @@ export const registerSettings = function() {
         config: false, // Hidden from the settings UI
         type: Object,
         default: {
-            "Rock Salt": { sticky: 60, photo: 13 },
-            "Courier New": { sticky: 90, photo: 16 },
-            "Times New Roman": { sticky: 80, photo: 20 },
-            "Signika": { sticky: 80, photo: 20 },
-            "Arial": { sticky: 80, photo: 20 }
+            "Rock Salt": { sticky: 90, photo: 20 },
+            "Courier New": { sticky: 250, photo: 30 },
+            "Times New Roman": { sticky: 200, photo: 30 },
+            "Signika": { sticky: 200, photo: 30 },
+            "Arial": { sticky: 200, photo: 30 }
         }
     });
 };

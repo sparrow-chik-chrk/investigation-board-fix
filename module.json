@@ -2,7 +2,7 @@
   "name": "investigation-board",
   "title": "Investigation Board",
   "description": "A Foundry VTT module that lets everyone create, edit, and move sticky and photo notes on the scene as collaborative investigation tools.",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "authors": [
     {
       "name": "Gus",

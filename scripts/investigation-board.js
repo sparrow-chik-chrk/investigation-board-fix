@@ -1,7 +1,7 @@
 import { registerSettings } from "./settings.js";
 
 const MODULE_ID = "investigation-board";
-const BASE_FONT_SIZE = 18;
+const BASE_FONT_SIZE = 16;
 const PIN_COLORS = ["redPin.webp", "bluePin.webp", "yellowPin.webp", "greenPin.webp"];
 
 
