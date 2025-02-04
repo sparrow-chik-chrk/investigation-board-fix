@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/fb12158b-9ea3-421a-8981-92cf6026d225)
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/W7W01A1ZN1)
 
 # Investigation Board
 
