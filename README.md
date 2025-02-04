@@ -1,3 +1,5 @@
+![image](https://github.com/user-attachments/assets/fb12158b-9ea3-421a-8981-92cf6026d225)
+
 # Investigation Board
 
 A Foundry VTT module that lets everyone create, edit, and move sticky and photo notes on the scene. A must-have for investigative games like City of Mist, Call of Cthulhu, and all your conspiracy adventures.
