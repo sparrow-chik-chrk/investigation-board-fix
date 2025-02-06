@@ -56,9 +56,19 @@ export const registerSettings = function() {
         onChange: () => refreshAllDrawings()
     });
 
+    game.settings.register(MODULE_ID, "indexNoteWidth", {
+        name: "Index Note Width",
+        hint: "The width (in pixels) for all newly created index cards (default: 600).",
+        scope: "world",
+        config: true,
+        type: Number,
+        default: 600,
+        onChange: () => refreshAllDrawings()
+    });
+
     game.settings.register(MODULE_ID, "baseFontSize", {
         name: "Base Font Size",
-        hint: "The font size (in pixels) for text when the note width is at its default size (default: 18).",
+        hint: "The font size (in pixels) for text when the note width is at its default size (default: 16).",
         scope: "world",
         config: true,
         type: Number,
@@ -112,6 +122,16 @@ export const registerSettings = function() {
         onChange: () => refreshAllDrawings()
     });
 
+    game.settings.register(MODULE_ID, "indexNoteDefaultText", {
+        name: "Default Index Note Text",
+        hint: "The default text to use for new index notes.",
+        scope: "world",
+        config: true,
+        type: String,
+        default: "Notes",
+        onChange: () => refreshAllDrawings()
+    });
+
     // Register base font size and character limits
     game.settings.register(MODULE_ID, "baseCharacterLimits", {
         name: "Base Character Limits",
@@ -120,11 +140,11 @@ export const registerSettings = function() {
         config: false, // Hidden from the settings UI
         type: Object,
         default: {
-            "Rock Salt": { sticky: 90, photo: 20 },
-            "Courier New": { sticky: 250, photo: 30 },
-            "Times New Roman": { sticky: 200, photo: 30 },
-            "Signika": { sticky: 200, photo: 30 },
-            "Arial": { sticky: 200, photo: 30 }
+            "Rock Salt": { sticky: 90, photo: 20, index: 210 },
+            "Courier New": { sticky: 250, photo: 30, index: 580 },
+            "Times New Roman": { sticky: 200, photo: 30, index: 800 },
+            "Signika": { sticky: 200, photo: 30, index: 650 },
+            "Arial": { sticky: 200, photo: 30, index: 650 }
         }
     });
 };
