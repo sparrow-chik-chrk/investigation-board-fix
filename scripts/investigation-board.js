@@ -222,7 +222,9 @@ class CustomDrawing extends Drawing {
           pinColor = (pinSetting === "random")
             ? PIN_COLORS[Math.floor(Math.random() * PIN_COLORS.length)]
             : `${pinSetting}Pin.webp`;
-          await this.document.update({ [`flags.${MODULE_ID}.pinColor`]: pinColor });
+          if (this.document.isOwner) {
+            await this.document.update({ [`flags.${MODULE_ID}.pinColor`]: pinColor });
+          }
         }
         const pinImage = `modules/investigation-board/assets/${pinColor}`;
         try {
@@ -326,7 +328,9 @@ class CustomDrawing extends Drawing {
           pinColor = (pinSetting === "random")
             ? PIN_COLORS[Math.floor(Math.random() * PIN_COLORS.length)]
             : `${pinSetting}Pin.webp`;
-          await this.document.update({ [`flags.${MODULE_ID}.pinColor`]: pinColor });
+	  if (this.document.isOwner) {
+            await this.document.update({ [`flags.${MODULE_ID}.pinColor`]: pinColor });
+          }
         }
         const pinImage = `modules/investigation-board/assets/${pinColor}`;
         try {
