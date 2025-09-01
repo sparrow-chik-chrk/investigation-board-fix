@@ -427,13 +427,13 @@ async function createNote(noteType) {
       strokeAlpha: 0,
       locked: false,
       flags: {
+        core: { sheetClass: "investigation-board.CustomDrawingSheet" },
         [MODULE_ID]: {
           type: noteType,
           text: defaultText,
           ...extraFlags
         },
       },
-      "flags.core.sheetClass": "investigation-board.CustomDrawingSheet",
       "ownership": { default: 3 },
     },
   ]);
