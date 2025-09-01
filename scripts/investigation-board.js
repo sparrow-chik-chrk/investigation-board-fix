@@ -443,14 +443,22 @@ async function createNote(noteType) {
 
 
 
-Hooks.on("getSceneControlButtons", (controls) => {
-  const journalControls = controls.find((c) => c.name === "notes");
-  if (!journalControls) return;
+Hooks.on("getSceneControlButtons", (controlsArg) => {
+  const list = Array.isArray(controlsArg)
+    ? controlsArg
+    : Array.isArray(controlsArg?.controls)
+      ? controlsArg.controls
+      : Object.values(controlsArg ?? {});
 
-  journalControls.tools.push(
+  const target = list.find(c => c?.name === "drawings" || c?.name === "notes");
+  if (!target?.tools) return;
+
+  target.tools.push(
     { name: "createStickyNote", title: "Create Sticky Note", icon: "fas fa-sticky-note", onClick: () => createNote("sticky"), button: true },
-    { name: "createPhotoNote", title: "Create Photo Note", icon: "fa-solid fa-camera-polaroid", onClick: () => createNote("photo"), button: true },
-    { name: "createIndexCard", title: "Create Index Card", icon: "fa-regular fa-subtitles", onClick: () => createNote("index"), button: true }
+    // Порада: у Foundry часто немає "fa-camera-polaroid". Краще "fas fa-camera".
+    { name: "createPhotoNote",  title: "Create Photo Note",  icon: "fas fa-camera",       onClick: () => createNote("photo"),  button: true },
+    // І це теж може бути відсутнім. Напр., "fas fa-align-left".
+    { name: "createIndexCard",  title: "Create Index Card",  icon: "fas fa-align-left",   onClick: () => createNote("index"),  button: true }
   );
 });
 
