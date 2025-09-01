@@ -423,7 +423,7 @@ async function createNote(noteType) {
       shape: { width, height },
       fillColor: "#ffffff",
       fillAlpha: 1,
-      strokeColor: "transparent",
+      strokeColor: "#000000",
       strokeAlpha: 0,
       locked: false,
       flags: {
