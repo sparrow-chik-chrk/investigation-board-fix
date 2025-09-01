@@ -444,23 +444,37 @@ async function createNote(noteType) {
 
 
 Hooks.on("getSceneControlButtons", (controlsArg) => {
-  const list = Array.isArray(controlsArg)
-    ? controlsArg
-    : Array.isArray(controlsArg?.controls)
-      ? controlsArg.controls
-      : Object.values(controlsArg ?? {});
+  // v12 => масив; v13 => Record<string, SceneControl>
+  const isV13 = !Array.isArray(controlsArg);
+  const list = isV13 ? Object.values(controlsArg ?? {}) : controlsArg;
 
-  const target = list.find(c => c?.name === "drawings" || c?.name === "notes");
-  if (!target?.tools) return;
+  const target = list.find(c => c?.name === "drawings")
+              ?? list.find(c => c?.name === "notes");
+  if (!target) return;
 
-  target.tools.push(
-    { name: "createStickyNote", title: "Create Sticky Note", icon: "fas fa-sticky-note", onClick: () => createNote("sticky"), button: true },
-    // Порада: у Foundry часто немає "fa-camera-polaroid". Краще "fas fa-camera".
-    { name: "createPhotoNote",  title: "Create Photo Note",  icon: "fas fa-camera",       onClick: () => createNote("photo"),  button: true },
-    // І це теж може бути відсутнім. Напр., "fas fa-align-left".
-    { name: "createIndexCard",  title: "Create Index Card",  icon: "fas fa-align-left",   onClick: () => createNote("index"),  button: true }
-  );
+  const addTool = (key, tool) => {
+    if (Array.isArray(target.tools)) {
+      // v12
+      target.tools.push(tool);
+    } else if (target.tools && typeof target.tools === "object") {
+      // v13
+      const arr = Object.values(target.tools);
+      const nextOrder = (arr.length ? Math.max(...arr.map(t => t.order ?? 0)) : 0) + 1;
+      target.tools[key] = { order: nextOrder, ...tool };
+    } else {
+      // страховка
+      target.tools = { [key]: { order: 1, ...tool } };
+    }
+  };
+
+  const mk = (name, title, icon, onClick) =>
+    ({ name, title, icon, button: true, onClick }); // onClick у v13 ще підтримується (депрек.), працює. :contentReference[oaicite:2]{index=2}
+
+  addTool("createStickyNote", mk("createStickyNote", "Create Sticky Note", "fas fa-sticky-note", () => createNote("sticky")));
+  addTool("createPhotoNote",  mk("createPhotoNote",  "Create Photo Note",  "fas fa-camera",       () => createNote("photo")));
+  addTool("createIndexCard",  mk("createIndexCard",  "Create Index Card",  "fas fa-align-left",   () => createNote("index")));
 });
+
 
 Hooks.once("init", () => {
   registerSettings();
